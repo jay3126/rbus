@@ -11,9 +11,9 @@
       it's not just a bus. it's rbus!
 
 %p#summary
-  = link_to "#{Trip.count}", url(:trips) 
-  trips. 
-  = link_to "#{User.count}", resource(:users) 
+  = link_to "#{Trip.count} trips", url(:trips) 
+  ==|
+  = User.count
   users.
   %b Add yours now!
   
