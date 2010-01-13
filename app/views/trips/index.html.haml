@@ -39,7 +39,7 @@
         %td
           == #{trip.start_stop.name} to #{trip.end_stop.name}
         %td
-          = trip.user.nick
+          = link_to trip.user.nick, resource(trip.user)
         %td
           = trip.on.to_s.gsub("_"," ")
         %td
