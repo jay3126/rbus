@@ -1,7 +1,10 @@
 %h3
   Showing
-  = Trip.count
+  = @trips.count
   trips
+  - if @user
+    for user
+    = @user.nick
 
 %table{:cellspacing => "0", :style => "background: white", :id=>"trips"}
   %thead

@@ -1,5 +1,7 @@
 class Users < Application
-
+  
+  before :ensure_is_same_user, :only => [:edit, :update, :delete, :destroy]
+  
   def index
     render
   end
@@ -34,6 +36,12 @@ class Users < Application
     else
       display @user, :edit
     end
+  end
+
+  private
+  def ensure_is_same_user
+    debugger
+    raise NotOwner unless session.user.id == params[:id].to_i
   end
   
 end

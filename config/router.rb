@@ -27,7 +27,9 @@
 
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
-  resources :users
+  resources :users do
+    resources :trips
+  end
   resources :trips
   resources :stops
 

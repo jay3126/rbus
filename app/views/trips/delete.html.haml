@@ -1,0 +1,5 @@
+%h1 Are you sure?
+
+= form_for (@trip, :action => resource(@trip), :method => :delete) do
+  = submit 'Delete'
+  = link_to 'Cancel', resource(session.user, :trips)
