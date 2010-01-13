@@ -5,11 +5,17 @@ class Trips < Application
   before :ensure_is_owner, :only => [:edit, :update, :delete, :destroy]
 
   def index
-    @start_stop = Stop.first(:name => params[:from]) unless params[:from].blank?
-    @end_stop = Stop.first(:name => params[:to]) unless params[:to].blank?
-    @start_trips = @start_stop.nil? ? Trip.all : @start_stop.nearby_stops.starts 
-    @end_trips = @end_stop.nil? ? Trip.all : @end_stop.nearby_stops.ends
-    @trips = @start_trips & @end_trips
+    debugger
+    if params[:user_id]
+      @user = User.get(params[:user_id])
+      @trips = @user.trips
+    else
+      @start_stop = Stop.first(:name => params[:from]) unless params[:from].blank?
+      @end_stop = Stop.first(:name => params[:to]) unless params[:to].blank?
+      @start_trips = @start_stop.nil? ? Trip.all : @start_stop.nearby_stops.starts 
+      @end_trips = @end_stop.nil? ? Trip.all : @end_stop.nearby_stops.ends
+      @trips = @start_trips & @end_trips
+    end
     display @trips
   end
 
@@ -28,6 +34,7 @@ class Trips < Application
   end
 
   def edit(id)
+    raise NotOwner
     only_provides :html
     @trip = Trip.get(id)
     raise NotFound unless @trip
@@ -79,11 +86,15 @@ class Trips < Application
     end
   end
 
+  def delete
+    render
+  end
+
   def destroy(id)
     @trip = Trip.get(id)
     raise NotFound unless @trip
     if @trip.destroy
-      redirect resource(:trips)
+      redirect resource(session.user, :trips)
     else
       raise InternalServerError
     end
@@ -93,8 +104,9 @@ class Trips < Application
 
   def ensure_is_owner
     return unless params[:id]
-    @trip = Trip.get(id)
+    debugger
+    @trip = Trip.get(params[:id])
     raise NotFound unless @trip
-    raise NotAcceptable unless session.user and @trip.user == session.user
+    raise NotOwner unless session.user and (@trip.user == session.user)
   end
 end # Trips
