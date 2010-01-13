@@ -187,7 +187,7 @@ background-image: url('error.png');
 #news {
   position: absolute;
   right: 3%;
-  top: 210px;
+  top: 190px;
 }
 
 #news h1 {
@@ -211,7 +211,13 @@ background-image: url('error.png');
 #inner_main {
   margin: 100px 0px 0px 50px;
   min-height: 1000px;
-  width: 75%;
+  width: 70%;
+  background: white;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  top: 30px;
 }
 
 #inner_main table {

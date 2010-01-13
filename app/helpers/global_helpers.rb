@@ -2,7 +2,6 @@ module Merb
   module GlobalHelpers
     # helpers defined here available to all views.  
     def show_rocket?
-      return false
       request.route.to_s == "/" and  not session.user
     end
 

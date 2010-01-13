@@ -4,9 +4,15 @@
   - if @user == session.user
     = link_to '[Change Password]', resource(@user, :edit)
   
-  %ul
-  - @user.trips.each do |trip|
-    %li
-      = trip.description
-      = link_to "#{trip.nearby_trips.count - 1} other trips like this", resource(trip)
+  %p
+    - if @user.trips.blank?
+      %h2
+        No trips.
+        = link_to 'See all trips', resource(:trips)
+    - else
+      %ul
+        - @user.trips.each do |trip|
+          %li
+            = trip.description
+            = link_to "#{trip.nearby_trips.count - 1} other trips like this", resource(trip)
       
