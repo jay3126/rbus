@@ -3,6 +3,7 @@
     = @user.nick
   - if @user == session.user
     = link_to '[Change Password]', resource(@user, :edit)
+    = link_to '[New Trip]', resource(:trips, :new)
   
   %p
     - if @user.trips.blank?

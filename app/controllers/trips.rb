@@ -5,7 +5,6 @@ class Trips < Application
   before :ensure_is_owner, :only => [:edit, :update, :delete, :destroy]
 
   def index
-    debugger
     if params[:user_id]
       @user = User.get(params[:user_id])
       @trips = @user.trips
@@ -68,8 +67,7 @@ class Trips < Application
       if @trip.save
         Merb.run_later do
          httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
-          debugger
-          link = request.env["SERVER_NAME"] + resource(@trip)
+          link = "http://#{request.env["HTTP_NAME"]}#{resource(@trip)}"
           client = Twitter::Base.new(httpauth)
           client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
         end
@@ -111,7 +109,6 @@ class Trips < Application
 
   def ensure_is_owner
     return unless params[:id]
-    debugger
     @trip = Trip.get(params[:id])
     raise NotFound unless @trip
     raise NotOwner unless session.user and (@trip.user == session.user)

@@ -10,12 +10,14 @@
       %br
       it's not just a bus. it's rbus!
 
-%p#summary
-  = link_to "#{Trip.count} trips", url(:trips) 
-  ==|
-  = User.count
-  users.
-  %b Add yours now!
+  %p#summary
+    = link_to "#{Trip.count} trips", url(:trips) 
+    ==|
+    = User.count
+    users.
+    %b Add yours now!
+- else
+  %h1 Add a trip
   
 #trip
   - unless @trip.errors
