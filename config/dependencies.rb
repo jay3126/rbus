@@ -36,3 +36,4 @@ dependency "merb_datamapper", merb_gems_version
 
 dependency "chronic"
 dependency "tlsmail"
+dependency "twitter"

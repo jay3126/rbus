@@ -34,4 +34,7 @@ Merb::BootLoader.after_app_loads do
     :auth   => :plain
   }
 
+  TWITTER_NAME = ""
+  TWITTER_PASSWORD = ""
+
 end

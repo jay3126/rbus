@@ -66,6 +66,13 @@ class Trips < Application
       @trip = Trip.new(trip)
       @trip.user = session.user
       if @trip.save
+        Merb.run_later do
+         httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
+          debugger
+          link = request.env["SERVER_NAME"] + resource(@trip)
+          client = Twitter::Base.new(httpauth)
+          client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
+        end
         redirect resource(@trip), :message => {:success => "Trip was successfully created"}
       else
         message[:error] = "Trip failed to be created"
