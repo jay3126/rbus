@@ -5,6 +5,7 @@ class Trips < Application
   before :ensure_is_owner, :only => [:edit, :update, :delete, :destroy]
 
   def index
+    debugger
     if params[:user_id]
       @user = User.get(params[:user_id])
       @trips = @user.trips

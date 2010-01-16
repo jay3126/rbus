@@ -10,25 +10,36 @@
 begin
   # Sets the default class ofr authentication.  This is primarily used for 
   # Plugins and the default strategies
-  Merb::Authentication.user_class = User 
+  # Merb::Authentication.user_class = User 
   
   
   # Mixin the salted user mixin
-  require 'merb-auth-more/mixins/salted_user'
-  Merb::Authentication.user_class.class_eval{ include Merb::Authentication::Mixins::SaltedUser }
+  # require 'merb-auth-more/mixins/salted_user'
+  # Merb::Authentication.user_class.class_eval{ include Merb::Authentication::Mixins::SaltedUser }
     
   # Setup the session serialization
-  class Merb::Authentication
+  #class Merb::Authentication
 
-    def fetch_user(session_user_id)
-      Merb::Authentication.user_class.get(session_user_id)
+  #   def fetch_user(session_user_id)
+  #     Merb::Authentication.user_class.get(session_user_id)
+  #   end
+
+  #   def store_user(user)
+  #     user.nil? ? user : user.id
+  #   end
+  # end
+
+  Warden::Strategies.add(:password) do
+    def valid?
+      params[:username] || params[:password]
     end
-
-    def store_user(user)
-      user.nil? ? user : user.id
+    
+    def authenticate!
+      u = User.authenticate(params[:username], params[:password])
+      u.nil? ? fail!("Could not log in") : success!(u)
     end
   end
-  
+
 rescue
   Merb.logger.error <<-TEXT
   

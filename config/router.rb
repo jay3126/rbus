@@ -41,6 +41,7 @@ Merb::Router.prepare do
   # routes, you may want to comment/remove this line to prevent
   # clients from calling your create or destroy actions with a GET
   match('/profile').to(:controller => 'users', :action => 'home')
+  match('/blog(/:title)').to(:controller => 'blog')
   match('/:name').to(:controller => 'pages', :action => 'show')
   # Change this for your home page to be available at /
   match('/').to(:controller => 'users', :action =>'home')

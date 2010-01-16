@@ -7,8 +7,9 @@ class Users < Application
   end
 
   def home
-    if session.user
-      @user = session.user
+    debugger
+    if request.env['warden'].user
+      @user = request.env['warden'].user
       render :show
     else
       @trip = Trip.new

@@ -7,5 +7,15 @@ end
 # that serves static files
 use Merb::Rack::Static, Merb.dir_for(:public)
 
+
+use Rack::Session::Cookie
+
+use Warden::Manager do |manager|
+  manager.default_strategies :password, :basic
+end
+
 # this is our main merb application
 run Merb::Rack::Application.new
+
+
+
