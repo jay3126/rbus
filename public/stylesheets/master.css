@@ -109,6 +109,10 @@ a {
   border-radius: 10px;
   -moz-border-radius: 10px;
 }
+#faq h1 { 
+  font-family: Georgia;
+}
+    
 #faq b {
   font-family: Georgia;
 }
