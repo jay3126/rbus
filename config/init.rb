@@ -17,7 +17,8 @@ end
  
 Merb::BootLoader.before_app_loads do
   # This will get executed after dependencies have been loaded but before your app's classes have loaded.
-  require 'blu.rb'
+  RANDOM_KEY  = "8be1632a38e5a1dd16f63d540dcf3be8c390abe6d3fa2e69b1c23f907f18f5b72f017a31fcfbe2a5f228a0ae7fc38aaf5ceeff3e4cfc4b8dbb520b54337f2928"
+  require "lib/functions"
 end
  
 Merb::BootLoader.after_app_loads do
