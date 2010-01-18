@@ -112,7 +112,13 @@ a {
 #faq h1 { 
   font-family: Georgia;
 }
-    
+#faq a {
+  text-decoration: none;
+}    
+#faq a:hover {
+  text-decoration: underline;
+}    
+
 #faq b {
   font-family: Georgia;
 }
