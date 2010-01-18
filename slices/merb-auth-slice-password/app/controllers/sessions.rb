@@ -36,7 +36,7 @@ class MerbAuthSlicePassword::Sessions < MerbAuthSlicePassword::Application
   
   # @overwritable
   def redirect_after_logout
-    cookies.delete(:rbus_user_id)
+    cookies.delete(:rbus_user)
     message[:notice] = "Logged Out"
     redirect "/", :message => message
   end  
