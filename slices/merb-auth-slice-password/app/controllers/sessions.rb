@@ -1,4 +1,10 @@
+require 'cgi'
+require 'openssl'
+require 'base64'
+require 'digest/sha1'
+
 class MerbAuthSlicePassword::Sessions < MerbAuthSlicePassword::Application
+  include AuthSystem
   
   before :_maintain_auth_session_before, :exclude => [:destroy]  # Need to hang onto the redirection during the session.abandon!
   before :_abandon_session,     :only => [:update, :destroy]
@@ -23,7 +29,7 @@ class MerbAuthSlicePassword::Sessions < MerbAuthSlicePassword::Application
   private   
   # @overwritable
   def redirect_after_login
-    cookies[:rbus_user_id] = session.user.id if session.user
+    set_login_cookie("#{session.user.id}:#{session.user.nick}")
     message[:notice] = "Authenticated Successfully"
     redirect_back_or "/", :message => message, :ignore => [slice_url(:login), slice_url(:logout)]
   end

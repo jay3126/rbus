@@ -8,8 +8,8 @@ class Users < Application
 
   def home
     debugger
-    if request.env['warden'].user
-      @user = request.env['warden'].user
+    if session.user
+      @user = session.user
       render :show
     else
       @trip = Trip.new
