@@ -24,5 +24,4 @@
     %h2 
       Get started now!
   = error_messages_for @trip
-  = form_for(@trip, :action => url(:trips)) do
-    = partial :fields
+  = partial 'trips/fields'
