@@ -6,6 +6,9 @@ class ContactMailer < Merb::MailController
   end
 
   def new_trip
+    debugger
+    @user = params[:user]
+    @trip = params[:trip]
     render_mail
   end
 

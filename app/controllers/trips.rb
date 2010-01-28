@@ -5,7 +5,6 @@ class Trips < Application
   before :ensure_is_owner, :only => [:edit, :update, :delete, :destroy]
 
   def index
-    debugger
     if params[:user_id]
       @user = User.get(params[:user_id])
       @trips = @user.trips
@@ -61,8 +60,11 @@ class Trips < Application
       end
     end
     if session.user
-      trip[:out_time] = Chronic.parse(trip[:out_time]).to_s.match(/\d\d:\d\d:\d\d/)[0].gsub(":","")[0..3] unless trip[:out_time].blank?
-      trip[:in_time] = Chronic.parse(trip[:in_time]).to_s.match(/\d\d:\d\d:\d\d/)[0].gsub(":","")[0..3] unless trip[:in_time].blank?
+      debugger
+      p_out_time = Chronic.parse(trip[:out_time])
+      trip[:out_time] = p_out_time ? p_out_time.to_s.match(/\d\d:\d\d:\d\d/)[0].gsub(":","")[0..3] : nil
+      p_in_time = Chronic.parse(trip[:in_time])
+      trip[:in_time] = p_in_time ? p_in_time.to_s.match(/\d\d:\d\d:\d\d/)[0].gsub(":","")[0..3] : nil
       @trip = Trip.new(trip)
       @trip.user = session.user
       if @trip.save
@@ -71,7 +73,7 @@ class Trips < Application
                       :from => "svs@rbus.in",
                       :to => @user.login,
                       :subject => "[rbus] Your trip has been created",
-                  }, {:user => @user, :trip => @trip})
+                  }, {:user => session.user, :trip => @trip})
           httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
           link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
           client = Twitter::Base.new(httpauth)

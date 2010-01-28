@@ -7,7 +7,7 @@ class Users < Application
   end
 
   def home
-    debugger
+#    debugger
     if session.user
       @user = session.user
       render :show
