@@ -1,0 +1,51 @@
+%table
+  %tr
+    %td
+      I go from
+    %td
+      - from_value = @trip.start_stop ? @trip.start_stop.name : params[:from]
+      = text_field :name => :from, :value => from_value, :class => "big"
+      = hidden_field :start_stop_id
+    %td{:rowspan => "2"}
+  %tr
+    %td
+      to
+    %td
+      - to_value = @trip.end_stop ? @trip.end_stop.name : params[:to]
+      = text_field :name => :to, :value => to_value, :class => "big"
+      = hidden_field :end_stop_id
+  %tr
+    %td
+      on
+    %td
+      = select :on, :collection => Trip.on.map{|m| [m.to_s, m.to_s.gsub("_"," ")]}, :class => "big"
+  %tr
+    %td
+      at
+    %td
+      = text_field :out_time, :class => "big"
+  %tr
+    %td
+      and back at
+    %td
+      = text_field :in_time, :class => "big"
+  - unless session.authenticated?
+    %tr
+      %td
+        email
+      %td
+        = text_field :name => "user[login]", :value => (params[:user].nil? ? nil : params[:user][:login]), :class => "big"
+      %td{:style => "font-size: 12px"}
+        (never disclosed)
+    
+    %tr
+      %td
+        nickname
+      %td
+        = text_field :name => "user[nick]", :value => params[:user].nil? ? nil : params[:user][:nick], :class => "big"
+      %td{:style => "font-size: 12px"}
+        (choose an anonymous handle)
+
+%input{ :type => "submit", :value => "Register My Trip", :style => "font-weight: bold" }
+%a{ :href => "/faq", :style => "position: relative; top: 5px; left: 25px;font-size: 25px;" }
+  How it works?
