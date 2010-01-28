@@ -1,13 +1,16 @@
-- debugger
 %h1 Congratulations
 
-== You have taken a first step towards a comfortable commute. Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been succesfully registerd. You can view the trip details 
-%a{:href => "http://rbus.in/trips/#{@trip.id}"}
-  here
-where you will also be able to edit or delete the trip.
+%p
+  == You have taken a first step towards a comfortable commute. Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been succesfully registerd. You can view the trip details 
+  %a{:href => "http://rbus.in/trips/#{@trip.id}"}
+    here, 
+  where you will also be able to edit or delete the trip.
 
-You currently have 
-= @trip.nearby_trips.count - 1
-fellow commuters. Rbus.in will notify you per email as and when other nearby commuters sign up. You can disable this from your user profile
-%a{:href => "http://rbus.in/users/#{@user.id}"}
-  here
+%p
+  %h2
+    You currently have 
+    = @trip.nearby_trips.count - 1
+    fellow commuters. 
+  Rbus.in will notify you per email as and when other nearby commuters sign up. You can disable this from your user profile
+  %a{:href => "http://rbus.in/users/#{@user.id}"}
+    here
