@@ -1,0 +1,10 @@
+%h1 Congratulations
+
+== You have taken a first step towards a comfortable commute. Your trip from #{@trip.from.name} to #{@trip.to.name} has been succesfully registerd. You can view the trip details 
+= link_to "here", "http://rbus.in/trips/#{@trip.id}"
+where you will also be able to edit or delete the trip.
+
+You currently have 
+= @trip.nearby_trips.count - 1
+fellow commuters. Rbus.in will notify you per email as and when other nearby commuters sign up. You can disable this from your user profile
+= link_to "here", "http://rbus.in/users/#{@user.id}"
