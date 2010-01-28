@@ -12,9 +12,11 @@ class User
   include DataMapper::Resource
   
   property :id,     Serial
-  property :login,  String, :unique => true, :format => :email_address, :nullable => false
+  property :login,  String, :format => :email_address, :nullable => false
   property :nick,  String, :unique => true, :nullable => true
 
   has n, :trips
+
+  validates_is_unique :login, :unless => Proc.new{|t| t.login == "svs@intellecap.net"}
   
 end
