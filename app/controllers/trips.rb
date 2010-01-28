@@ -71,7 +71,7 @@ class Trips < Application
                       :from => "svs@rbus.in",
                       :to => @user.login,
                       :subject => "[rbus] Your trip has been created",
-                  }, {:user => @user, :password => @user.password})
+                  }, {:user => @user, :trip => @trip})
           httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
           link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
           client = Twitter::Base.new(httpauth)
