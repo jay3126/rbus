@@ -52,7 +52,7 @@ class Trips < Application
           send_mail(ContactMailer, :signup, {
                       :from => "svs@rbus.in",
                       :to => @user.login,
-                      :subject => "Welcome to rbus",
+                      :subject => "[rbus] Welcome to rbus",
                   }, {:user => @user, :password => @user.password})
         end
       else
@@ -67,7 +67,12 @@ class Trips < Application
       @trip.user = session.user
       if @trip.save
         Merb.run_later do
-         httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
+          send_mail(ContactMailer, :new_trip, {
+                      :from => "svs@rbus.in",
+                      :to => @user.login,
+                      :subject => "[rbus] Your trip has been created",
+                  }, {:user => @user, :password => @user.password})
+          httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
           link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
           client = Twitter::Base.new(httpauth)
           client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
