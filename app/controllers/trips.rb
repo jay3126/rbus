@@ -33,7 +33,6 @@ class Trips < Application
   end
 
   def edit(id)
-    raise NotOwner
     only_provides :html
     @trip = Trip.get(id)
     raise NotFound unless @trip
@@ -118,7 +117,7 @@ class Trips < Application
   def ensure_is_owner
     return unless params[:id]
     @trip = Trip.get(params[:id])
-    raise NotFound unless @trip
+    raise NotOwner unless @trip
     raise NotOwner unless session.user and (@trip.user == session.user)
   end
 end # Trips

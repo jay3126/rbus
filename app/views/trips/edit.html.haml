@@ -1,14 +1,11 @@
 %h1
-  Trips controller, edit action
-%p
-  Edit this file in
-  %tt
-    app/views/trips/edit.html.erb
+  Edit your trip
 = error_messages_for @trip
 
-= form_for(@trip, :action => url(:trip, @trip)) do
-  %p
-    = submit "Update"
+#trip
+  = form_for(@trip, :action => url(:trip, @trip)) do
+    = partial :fields
+  
 
 = link_to 'Show', url(:trip, @trip)
 |
