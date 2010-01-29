@@ -46,13 +46,11 @@ class Trips < Application
       @user.password_confirmation = @user.password
       if @user.save
         session.user = @user
-        Merb.run_later do
-          send_mail(ContactMailer, :signup, {
-                      :from => "svs@rbus.in",
-                      :to => @user.login,
-                      :subject => "[rbus] Welcome to rbus",
+        send_mail(ContactMailer, :signup, {
+                    :from => "svs@rbus.in",
+                    :to => @user.login,
+                    :subject => "[rbus] Welcome to rbus",
                   }, {:user => @user, :password => @user.password})
-        end
       else
         @trip = Trip.new(trip)
         @user.errors.keys.each{|k| @trip.errors["user #{k}"] = @user.errors[k]}
@@ -67,17 +65,15 @@ class Trips < Application
       @trip = Trip.new(trip)
       @trip.user = session.user
       if @trip.save
-        Merb.run_later do
-          send_mail(ContactMailer, :new_trip, {
-                      :from => "svs@rbus.in",
-                      :to => @user.login,
-                      :subject => "[rbus] Your trip has been created",
+        send_mail(ContactMailer, :new_trip, {
+                    :from => "svs@rbus.in",
+                    :to => @user.login,
+                    :subject => "[rbus] Your trip has been created",
                   }, {:user => session.user, :trip => @trip})
-          httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
-          link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
-          client = Twitter::Base.new(httpauth)
-          client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
-        end
+        httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
+        link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
+        client = Twitter::Base.new(httpauth)
+        client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
         redirect resource(@trip), :message => {:success => "Trip was successfully created"}
       else
         message[:error] = "Trip failed to be created"

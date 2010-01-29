@@ -1,12 +1,12 @@
 %h1 Congratulations
 
-%p
+%p{:style => "font-size:20px"}
   == You have taken a first step towards a comfortable commute. Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been succesfully registerd. You can view the trip details 
   %a{:href => "http://rbus.in/trips/#{@trip.id}"}
     here, 
   where you will also be able to edit or delete the trip.
 
-%p
+%p{:style => "font-size:20px"}
   %h2
     You currently have 
     = @trip.nearby_trips.count - 1
