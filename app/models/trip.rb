@@ -7,6 +7,7 @@ class Trip
   property :in_time, Integer, :nullable => false
   property :on, Enum.send('[]',*ON)
   
+  property :created_at, DateTime
   property :deleted_at, ParanoidDateTime  
 
   belongs_to :start_stop, :model => Stop, :child_key => [:start_stop_id], :nullable => true
