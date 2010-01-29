@@ -14,7 +14,7 @@ class User
   property :id,     Serial
   property :login,  String, :format => :email_address, :nullable => false
   property :nick,  String, :unique => true, :nullable => true
-
+  property :created_at, DateTime
   has n, :trips
 
   validates_is_unique :login, :unless => Proc.new{|t| t.login == "svs@intellecap.net"}
