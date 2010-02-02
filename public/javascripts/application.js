@@ -16,27 +16,28 @@ function refresh_trips() {
 }
 
 $(document).ready(function() {
-	$("#from").autocomplete("/stops.js", {
-		formatItem: function(row){return row[0].split(",")[1]},
-		    formatResult: function(row){if(row){return row[0].split(",")[1]}},
-		    autofill: false,
-		    minChars: 3
-		    });
-	$("#from").result(function(event, data, formatted) {
-	  if(data){
-	      $("#trip_start_stop_id").val(data[0].split(",")[0]);
-	      refresh_trips();
+	$("#from").autocomplete(data, {
+	  formatItem: function(d,i,total){if(d){return d}},
+	  formatResult: function(row){return (row + "").split(",")[1];},
+	  autofill: false,
+	  matchContains: true
+	});
+	$("#from").result(function(event, d, formatted) {
+	  if(d){
+	    alert(d+"!!!");
+	      $("#trip_start_stop_id").val(d.split(",")[0]);
+	      //refresh_trips();
 	  }
       });
-  $("#to").autocomplete("/stops.js", {
+  $("#to").autocomplete(data, {
 	  formatItem: function(row){return row[0].split(",")[1]},
 	      formatResult: function(row){if(row){return row[0].split(",")[1]}},
 	      autofill: false,
 	      minChars: 3
   });
-  $("#to").result(function(event, data, formatted) {
-	  if(data){
-	      $("#trip_end_stop_id").attr("value",data[0].split(",")[0]);
+  $("#to").result(function(event, d, formatted) {
+	  if(d){
+	      $("#trip_end_stop_id").attr("value",d[0].split(",")[0]);
 	      refresh_trips();
 	  }
       });
