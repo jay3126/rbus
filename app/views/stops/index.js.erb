@@ -1,0 +1,6 @@
+data = [
+  <% @stops[0..5].each_with_index do |s,i| %>
+    "<%=s.id%>,<%=s.name%>", 
+  <% end %>
+  "last,m"
+]
