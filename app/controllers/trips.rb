@@ -40,11 +40,13 @@ class Trips < Application
   end
 
   def create(trip)
+    message = ""
     unless session.authenticated?
       @user = User.new(params[:user])
       @user.password = MD5.hexdigest(@user[:login])[0..9]
       @user.password_confirmation = @user.password
       if @user.save
+        message = "Your account has been created. An email has been sent to #{@user.login} with your password."
         session.user = @user
         send_mail(ContactMailer, :signup, {
                     :from => "svs@rbus.in",
@@ -70,11 +72,14 @@ class Trips < Application
                     :to => @user.login,
                     :subject => "[rbus] Your trip has been created",
                   }, {:user => session.user, :trip => @trip})
-        httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
-        link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
-        client = Twitter::Base.new(httpauth)
-        client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
-        redirect resource(@trip), :message => {:success => "Trip was successfully created"}
+        unless TWITTER_NAME.blank?
+          httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
+          link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
+          client = Twitter::Base.new(httpauth)
+          client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
+        end
+        message += "Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been registered."
+        redirect resource(@trip), :message => {:success => message}
       else
         message[:error] = "Trip failed to be created"
         render :new
