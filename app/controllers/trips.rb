@@ -40,11 +40,13 @@ class Trips < Application
   end
 
   def create(trip)
+    message = ""
     unless session.authenticated?
       @user = User.new(params[:user])
       @user.password = MD5.hexdigest(@user[:login])[0..9]
       @user.password_confirmation = @user.password
       if @user.save
+        message = "Your account has been created. An email has been sent to #{@user.login} with your password."
         session.user = @user
         Merb.run_later do
           send_mail(ContactMailer, :signup, {
