@@ -48,11 +48,13 @@ class Trips < Application
       if @user.save
         message = "Your account has been created. An email has been sent to #{@user.login} with your password."
         session.user = @user
-        send_mail(ContactMailer, :signup, {
+        Merb.run_later do
+          send_mail(ContactMailer, :signup, {
                     :from => "svs@rbus.in",
                     :to => @user.login,
                     :subject => "[rbus] Welcome to rbus",
                   }, {:user => @user, :password => @user.password})
+        end
       else
         @trip = Trip.new(trip)
         @user.errors.keys.each{|k| @trip.errors["user #{k}"] = @user.errors[k]}
@@ -73,10 +75,12 @@ class Trips < Application
                     :subject => "[rbus] Your trip has been created",
                   }, {:user => session.user, :trip => @trip})
         unless TWITTER_NAME.blank? or @trip.user.login == "svs@intellecap.net"
-          httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
-          link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
-          client = Twitter::Base.new(httpauth)
-          client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
+          Merb.run_later do
+            httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
+            link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
+            client = Twitter::Base.new(httpauth)
+            client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
+          end
         end
         message += "Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been registered."
         redirect resource(@trip), :message => {:success => message}
