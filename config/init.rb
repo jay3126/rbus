@@ -31,7 +31,7 @@ Merb::BootLoader.after_app_loads do
     :host   => 'smtp.gmail.com',
     :port   => '587',
     :user   => 'svs@rbus.in',
-    :pass   => 's8s4a7m2',
+    :pass   => '',
     :auth   => :plain
   }
 
