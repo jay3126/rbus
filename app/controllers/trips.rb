@@ -72,7 +72,7 @@ class Trips < Application
                     :to => @user.login,
                     :subject => "[rbus] Your trip has been created",
                   }, {:user => session.user, :trip => @trip})
-        unless TWITTER_NAME.blank?
+        unless TWITTER_NAME.blank? or @trip.user.login == "svs@intellecap.net"
           httpauth = Twitter::HTTPAuth.new(TWITTER_NAME, TWITTER_PASSWORD) 
           link = "http://#{request.env["HTTP_HOST"]}#{resource(@trip)}"
           client = Twitter::Base.new(httpauth)
