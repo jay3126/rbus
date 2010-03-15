@@ -1,0 +1,6 @@
+- if message
+  #messages
+    - message.each do |key,value|
+      .flash{:class => key.to_s}
+        =value
+        %br
