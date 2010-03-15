@@ -13,6 +13,7 @@
     %script{:type => "text/javascript", :src => "/stops.js"}
   %body
     #container
+      = partial 'layout/messages'
       #header-container
       #menu
         = link_to image_tag('/images/rbus-logo.png', :border => "0px", :id => "logo"), "/", :border => "0px"
@@ -28,19 +29,12 @@
           = link_to "blog", "/blog"
           = link_to "faq", "/faq"
       #main-container
-        - if message
-          #messages
-            - message.each do |key,value|
-              .flash{:class => key.to_s}
-                =value
-                %br
         - if show_rocket?
           #main
             = catch_content :for_layout
         - else
           #inner_main
             = catch_content :for_layout
-        
-      #news
-        = twitter_widget
+        #news
+          = twitter_widget
             

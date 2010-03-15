@@ -40,20 +40,23 @@ class Trips < Application
   end
 
   def create(trip)
+    debugger
     message = ""
     unless session.authenticated?
       @user = User.new(params[:user])
       @user.password = MD5.hexdigest(@user[:login])[0..9]
       @user.password_confirmation = @user.password
       if @user.save
-        message = "Your account has been created. An email has been sent to #{@user.login} with your password."
+        message = "Your account has been created. An email has been sent to <b>#{@user.login}</b> with your password."
         session.user = @user
-        Merb.run_later do
-          send_mail(ContactMailer, :signup, {
+        unless (Merb::Mailer.config[:user].blank? or Merb::Mailer.config[:pass].blank?)
+          Merb.run_later do
+            send_mail(ContactMailer, :signup, {
                     :from => "svs@rbus.in",
                     :to => @user.login,
                     :subject => "[rbus] Welcome to rbus",
                   }, {:user => @user, :password => @user.password})
+          end
         end
       else
         @trip = Trip.new(trip)
@@ -82,7 +85,7 @@ class Trips < Application
             client.update("#rbus #{@trip.user.nick} added a trip form #{@trip.start_stop.name[0..20]} to #{@trip.end_stop.name[0..20]}. #{link}")
           end
         end
-        message += "Your trip from #{@trip.start_stop.name} to #{@trip.end_stop.name} has been registered."
+        message += "Your trip from <b>#{@trip.start_stop.name}</b> to <b>#{@trip.end_stop.name}</b> has been registered."
         redirect resource(@trip), :message => {:success => message}
       else
         message[:error] = "Trip failed to be created"

@@ -13,10 +13,10 @@ class User
   
   property :id,     Serial
   property :login,  String, :format => :email_address, :nullable => false
-  property :nick,  String, :unique => true, :nullable => true
+  property :nick,  String, :nullable => false
   property :created_at, DateTime
   has n, :trips
 
   validates_is_unique :login, :unless => Proc.new{|t| t.login == "svs@intellecap.net"}
-  
+  validates_is_unique :nick, :unless => Proc.new{|t| t.login == "svs@intellecap.net"}
 end
